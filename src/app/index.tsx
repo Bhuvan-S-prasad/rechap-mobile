@@ -4,9 +4,9 @@ import { StyleSheet, Text, View } from "react-native";
 
 export default function Index() {
   const { isSignedIn } = useAuth();
-
+  
   if (!isSignedIn) {
-    return <Redirect href={"/"} />;
+    return <Redirect href={"/(auth)/sign-in"} />;
   }
 
   return (
