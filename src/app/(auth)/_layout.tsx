@@ -8,9 +8,9 @@ export default function AuthRoutesLayout() {
     return null;
   }
 
-  // if (isSignedIn) {
-  //   return <Redirect href={"/"} />;
-  // }
+  if (isSignedIn) {
+    return <Redirect href={"/"} />;
+  }
 
   return <Slot />;
 }
