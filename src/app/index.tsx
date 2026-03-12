@@ -3,15 +3,15 @@ import { Redirect } from "expo-router";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 
 export default function Index() {
-  const { isSignedIn, signOut } = useAuth();
-  const { user, isLoaded } = useUser();
+  const { isSignedIn, signOut, isLoaded: isAuthLoaded } = useAuth();
+  const { user, isLoaded: isUserLoaded } = useUser();
+
+  if (!isAuthLoaded || !isUserLoaded) {
+    return null;
+  }
 
   if (!isSignedIn) {
     return <Redirect href="/(auth)/sign-in" />;
-  }
-
-  if (!isLoaded) {
-    return null;
   }
 
   return (

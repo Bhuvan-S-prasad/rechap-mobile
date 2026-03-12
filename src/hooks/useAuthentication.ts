@@ -7,17 +7,17 @@ const useAuthentication = () => {
   const { startSSOFlow } = useSSO();
   const { signIn, setActive } = useSignIn();
 
-  const handleOAuth = async (stratergy: "oauth_google" | "oauth_discord") => {
+  const handleOAuth = async (strategy: "oauth_google" | "oauth_discord") => {
     if (loading) return;
-    setLoading(stratergy);
+    setLoading(strategy);
     try {
       const { createdSessionId, setActive } = await startSSOFlow({
-        strategy: stratergy,
+        strategy,
       });
 
       if (!createdSessionId || !setActive) {
-        const provider = stratergy === "oauth_google" ? "Google" : "Discord";
-        Alert.alert(`Sign in did not complete`);
+        const provider = strategy === "oauth_google" ? "Google" : "Discord";
+        Alert.alert(`Sign in with ${provider} did not complete`);
         return;
       }
 
