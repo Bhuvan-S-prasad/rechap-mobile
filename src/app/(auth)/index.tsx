@@ -1,11 +1,25 @@
+import { useAuth } from "@clerk/clerk-expo";
 import { Text } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { View } from "react-native-reanimated/lib/typescript/Animated";
 
 const AuthScreen = () => {
+  const { handleAuth, loading } = useAuth();
+
+  const isLoading = loading !== null;
   return (
-    <SafeAreaView>
+    <View className="flex-1 items-center justify-center bg-gray-900">
       <Text>Auth</Text>
-    </SafeAreaView>
+      <Button
+        title="Google"
+        onPress={() => handleAuth("oauth_google")}
+        disabled={isLoading}
+      />
+      <Button
+        title="Discord"
+        onPress={() => handleAuth("oauth_discord")}
+        disabled={isLoading}
+      />
+    </View>
   );
 };
 
