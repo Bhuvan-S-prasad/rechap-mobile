@@ -1,6 +1,7 @@
 import { useAuth, useUser } from "@clerk/clerk-expo";
 import { Redirect } from "expo-router";
-import { Pressable, StyleSheet, Text, View } from "react-native";
+import { StyleSheet, View } from "react-native";
+import { NavigationSidebar } from "@/components/navigation/NavSidebar";
 
 export default function Index() {
   const { isSignedIn, signOut, isLoaded: isAuthLoaded } = useAuth();
@@ -16,23 +17,7 @@ export default function Index() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>User Debug Info</Text>
-
-      <Text style={styles.text}>User ID: {user?.id}</Text>
-
-      <Text style={styles.text}>
-        Email: {user?.primaryEmailAddress?.emailAddress}
-      </Text>
-
-      <Text style={styles.text}>Username: {user?.username ?? "Not set"}</Text>
-
-      <Text style={styles.text}>Full Name: {user?.fullName ?? "Not set"}</Text>
-
-      <Text style={styles.text}>Created: {user?.createdAt?.toString()}</Text>
-
-      <Pressable style={styles.button} onPress={() => signOut()}>
-        <Text style={styles.buttonText}>Sign Out</Text>
-      </Pressable>
+      <NavigationSidebar />
     </View>
   );
 }
@@ -40,9 +25,7 @@ export default function Index() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-    gap: 10,
+    flexDirection: "row",
   },
   title: {
     fontSize: 22,
