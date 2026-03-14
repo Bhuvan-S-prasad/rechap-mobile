@@ -1,7 +1,6 @@
+import { router } from "expo-router";
 import { MessageCircle, Plus } from "lucide-react-native";
 import { Pressable, StyleSheet, View } from "react-native";
-
-
 
 export const NavigationAction = () => {
   return (
@@ -13,7 +12,9 @@ export const NavigationAction = () => {
         <MessageCircle size={24} color="#6366f1" />
       </Pressable>
 
-      <Pressable style={styles.iconWrapper} 
+      <Pressable
+        style={styles.iconWrapper}
+        onPress={() => router.push("/create-channel")}
       >
         <Plus size={24} color="#6366f1" />
       </Pressable>
