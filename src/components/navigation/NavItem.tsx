@@ -1,5 +1,5 @@
-import { Pressable, Image, StyleSheet } from "react-native";
-import { router, useLocalSearchParams } from "expo-router";
+import { useLocalSearchParams } from "expo-router";
+import { Image, Pressable, StyleSheet, View } from "react-native";
 
 interface NavItemProps {
   id: string;
@@ -11,12 +11,18 @@ export const NavItem = ({ id, imageUrl }: NavItemProps) => {
   const params = useLocalSearchParams();
   const isActive = params?.channelId === id;
 
-//   const onPress = () => {
-//     router.push(`/channels/${id}`);
-//   };
+  //   const onPress = () => {
+  //     router.push(`/channels/${id}`);
+  //   };
 
   return (
     <Pressable style={styles.wrapper}>
+      <View
+        style={[
+          styles.indicator,
+          isActive ? styles.indicatorActive : styles.indicatorInactive
+        ]}
+      />
       <Image
         source={{ uri: imageUrl }}
         style={[styles.image, isActive && styles.active]}
@@ -29,11 +35,28 @@ const styles = StyleSheet.create({
   wrapper: {
     marginBottom: 16,
     alignItems: "center",
+    justifyContent: "center",
+    width: 80,
+  },
+  indicator: {
+    position: "absolute",
+    left: 0,
+    width: 4,
+    backgroundColor: "white",
+    borderTopRightRadius: 4,
+    borderBottomRightRadius: 4,
+  },
+  indicatorActive: {
+    height: 36,
+  },
+  indicatorInactive: {
+    height: 8,
+    opacity: 0,
   },
   image: {
     width: 48,
     height: 48,
-    borderRadius: 24,
+    borderRadius: 12,
   },
   active: {
     borderWidth: 3,

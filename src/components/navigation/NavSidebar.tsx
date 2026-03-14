@@ -9,7 +9,9 @@ export const NavigationSidebar = () => {
 
   return (
     <View style={styles.container}>
-      <NavigationAction onCreateChannel={() => {}} />
+      <NavigationAction />
+
+      <View style={styles.separator} />
 
       <FlatList
         style={styles.list}
@@ -48,6 +50,13 @@ const styles = StyleSheet.create({
     backgroundColor: "rgb(18, 18, 20)",
     alignItems: "center",
     paddingVertical: 16,
+  },
+  separator: {
+    height: 2,
+    width: 32,
+    backgroundColor: "rgb(43, 45, 49)",
+    borderRadius: 1,
+    marginVertical: 8,
   },
   list: {
     flex: 1,

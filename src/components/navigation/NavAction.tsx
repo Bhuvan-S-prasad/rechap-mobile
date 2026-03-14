@@ -1,12 +1,9 @@
-import { Pressable, View, StyleSheet } from "react-native";
 import { MessageCircle, Plus } from "lucide-react-native";
-import { router } from "expo-router";
+import { Pressable, StyleSheet, View } from "react-native";
 
-interface Props {
-  onCreateChannel: () => void;
-}
 
-export const NavigationAction = ({ onCreateChannel }: Props) => {
+
+export const NavigationAction = () => {
   return (
     <View style={styles.container}>
       <Pressable
@@ -16,7 +13,8 @@ export const NavigationAction = ({ onCreateChannel }: Props) => {
         <MessageCircle size={24} color="#6366f1" />
       </Pressable>
 
-      <Pressable style={styles.iconWrapper} onPress={onCreateChannel}>
+      <Pressable style={styles.iconWrapper} 
+      >
         <Plus size={24} color="#6366f1" />
       </Pressable>
     </View>

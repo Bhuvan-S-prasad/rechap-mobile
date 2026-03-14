@@ -8,20 +8,34 @@ export const useChannels = () => {
   const fetchChannels = async () => {
     const token = await getToken();
 
-    const res = await fetch("http://localhost:3000/api/channels", {
+    const res = await fetch("https://rechap01.netlify.app/api/channels", {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     });
 
     const data = await res.json();
-    console.log(data);
     setChannels(data);
+  };
+
+  const createChannel = async (values: { name: string; imageUrl: string }) => {
+    const token = await getToken();
+
+    await fetch("https://rechap01.netlify.app/api/channels", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(values),
+    });
+
+    await fetchChannels();
   };
 
   useEffect(() => {
     fetchChannels();
   }, []);
 
-  return { channels };
+  return { channels, fetchChannels, createChannel };
 };

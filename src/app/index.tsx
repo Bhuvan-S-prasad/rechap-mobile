@@ -1,6 +1,7 @@
 import { useAuth, useUser } from "@clerk/clerk-expo";
 import { Redirect } from "expo-router";
 import { StyleSheet, View } from "react-native";
+import { NavigationSidebar } from "@/components/navigation/NavSidebar";
 
 export default function Index() {
   const { isSignedIn, signOut, isLoaded: isAuthLoaded } = useAuth();
@@ -16,7 +17,7 @@ export default function Index() {
 
   return (
     <View style={styles.container}>
-      
+      <NavigationSidebar />
     </View>
   );
 }
