@@ -1,4 +1,4 @@
-import { useLocalSearchParams } from "expo-router";
+import { useLocalSearchParams, useRouter } from "expo-router";
 import { Image, Pressable, StyleSheet, View } from "react-native";
 
 interface NavItemProps {
@@ -10,17 +10,18 @@ interface NavItemProps {
 export const NavItem = ({ id, imageUrl }: NavItemProps) => {
   const params = useLocalSearchParams();
   const isActive = params?.channelId === id;
+  const router = useRouter();
 
-  //   const onPress = () => {
-  //     router.push(`/channels/${id}`);
-  //   };
+  const onPress = () => {
+    router.push(`/channels/${id}`);
+  };
 
   return (
-    <Pressable style={styles.wrapper}>
+    <Pressable style={styles.wrapper} onPress={onPress}>
       <View
         style={[
           styles.indicator,
-          isActive ? styles.indicatorActive : styles.indicatorInactive
+          isActive ? styles.indicatorActive : styles.indicatorInactive,
         ]}
       />
       <Image
