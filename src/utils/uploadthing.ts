@@ -18,7 +18,7 @@ export const { useImageUploader, useDocumentUploader } =
             ? input.toString()
             : (input as Request).url;
 
-      console.log(`[UT] [${init?.method || "GET"}] -> ${url.split("?")[0]}`);
+      if (__DEV__) console.log(`[UT] [${init?.method || "GET"}] -> ${url.split("?")[0]}`);
 
       // Only intercept S3 PUT uploads (strip internal headers that S3 rejects)
       const isS3Put =
@@ -26,7 +26,7 @@ export const { useImageUploader, useDocumentUploader } =
         init?.method?.toUpperCase() === "PUT";
 
       if (isS3Put) {
-        console.log("[UT] SANITIZING S3 UPLOAD REQUEST");
+        if (__DEV__) console.log("[UT] SANITIZING S3 UPLOAD REQUEST");
         // S3 presigned URLs are very sensitive to headers.
         // We must strip any headers that weren't part of the signing process.
         const h = new Headers(init?.headers);
@@ -39,22 +39,25 @@ export const { useImageUploader, useDocumentUploader } =
         
         entries.forEach(([key]) => {
           if (!headersToKeep.includes(key.toLowerCase()) && !key.toLowerCase().startsWith("x-amz-")) {
-            console.log(`[UT] Stripping header from S3 request: ${key}`);
+            if (__DEV__) console.log(`[UT] Stripping header from S3 request: ${key}`);
             h.delete(key);
           }
         });
 
-        console.log("[UT] Cleaned S3 Headers:", Object.fromEntries(h.entries()));
+        if (__DEV__) console.log("[UT] Cleaned S3 Headers:", Object.fromEntries(h.entries()));
 
         let body = init?.body;
 
         // For Native (iOS/Android), we need to send the file as a Blob/File, not FormData
         if (Platform.OS !== "web" && body instanceof FormData) {
           try {
-            const file = body.get("file") as any;
-            if (file?.uri) {
-              body = await fetch(file.uri).then((r) => r.blob());
-              console.log("[UT] Successfully converted FormData to Blob for Native S3 upload");
+            // FormData.get() is unavailable in React Native; use getParts() instead
+            const filePart = (body as any).getParts().find((p: any) => p.name === "file");
+            const uri = filePart?.uri;
+
+            if (uri) {
+              body = await fetch(uri).then((r) => r.blob());
+              if (__DEV__) console.log("[UT] Successfully converted FormData to Blob for Native S3 upload");
             }
           } catch (err) {
             console.error("[UT] S3 blob conversion failed:", err);
