@@ -1,4 +1,4 @@
-import { ChannelSidebar } from "@/components/channel/channelSidebar";
+import { ChannelSidebar } from "@/components/channel/ChannelSidebar";
 import { useChannels } from "@/hooks/useChannels";
 import { useAuth } from "@clerk/clerk-expo";
 import { useLocalSearchParams } from "expo-router";
