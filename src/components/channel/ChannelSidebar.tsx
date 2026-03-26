@@ -35,17 +35,19 @@ export const ChannelSidebar = ({
 }: ChannelSidebarProps) => {
   if (!channel) return null;
 
-  const textRooms = channel.rooms.filter((room: any) => room.type === "TEXT");
-  const voiceRooms = channel.rooms.filter((room: any) => room.type === "AUDIO");
-  const videoRooms = channel.rooms.filter((room: any) => room.type === "VIDEO");
+  const rooms = Array.isArray(channel.rooms) ? channel.rooms : [];
+  const textRooms = rooms.filter((room: any) => room.type === "TEXT");
+  const voiceRooms = rooms.filter((room: any) => room.type === "AUDIO");
+  const videoRooms = rooms.filter((room: any) => room.type === "VIDEO");
 
-  const members = channel.members.filter(
+  const allMembers = Array.isArray(channel.members) ? channel.members : [];
+  const members = allMembers.filter(
     (member: any) => member.userId !== currentUserId,
   );
 
   const role =
-    channel.members.find((member: any) => member.userId === currentUserId)
-      ?.role || "GUEST";
+    allMembers.find((member: any) => member.userId === currentUserId)?.role ||
+    "GUEST";
 
   return (
     <View style={styles.container}>
@@ -89,7 +91,7 @@ export const ChannelSidebar = ({
                   data: members.map((member: any) => ({
                     icon: roleIconMap[member.role],
                     id: member.id,
-                    name: member.user.name,
+                    name: member.user?.name ?? "Unknown",
                   })),
                 },
               ]}

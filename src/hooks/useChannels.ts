@@ -5,11 +5,12 @@ export const useChannels = () => {
   const { getToken } = useAuth();
   const [channels, setChannels] = useState<any[]>([]);
   const [channel, setChannel] = useState<any>(null);
-  const [loading, setLoading] = useState(false);
+  const [loadingList, setLoadingList] = useState(false);
+  const [loadingItem, setLoadingItem] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   const fetchChannels = async () => {
-    setLoading(true);
+    setLoadingList(true);
     setError(null);
     try {
       const token = await getToken();
@@ -24,24 +25,28 @@ export const useChannels = () => {
       });
 
       if (!res.ok) {
-        throw new Error(`Failed to fetch channels: ${res.status} ${res.statusText}`);
+        throw new Error(
+          `Failed to fetch channels: ${res.status} ${res.statusText}`,
+        );
       }
 
       const data = await res.json();
       if (!Array.isArray(data)) {
-        throw new Error("Invalid response format: expected an array of channels");
+        throw new Error(
+          "Invalid response format: expected an array of channels",
+        );
       }
       setChannels(data);
     } catch (err: any) {
       setError(err.message || "An unexpected error occurred");
       throw err;
     } finally {
-      setLoading(false);
+      setLoadingList(false);
     }
   };
 
   const fetchChannel = async (channelId: string) => {
-    setLoading(true);
+    setLoadingItem(true);
     setError(null);
     try {
       const token = await getToken();
@@ -59,7 +64,9 @@ export const useChannels = () => {
       );
 
       if (!res.ok) {
-        throw new Error(`Failed to fetch channel: ${res.status} ${res.statusText}`);
+        throw new Error(
+          `Failed to fetch channel: ${res.status} ${res.statusText}`,
+        );
       }
 
       const data = await res.json();
@@ -68,7 +75,7 @@ export const useChannels = () => {
       setError(err.message || "An unexpected error occurred");
       throw err;
     } finally {
-      setLoading(false);
+      setLoadingItem(false);
     }
   };
 
@@ -90,7 +97,9 @@ export const useChannels = () => {
       });
 
       if (!res.ok) {
-        throw new Error(`Failed to create channel: ${res.status} ${res.statusText}`);
+        throw new Error(
+          `Failed to create channel: ${res.status} ${res.statusText}`,
+        );
       }
 
       await fetchChannels();
@@ -107,7 +116,9 @@ export const useChannels = () => {
   return {
     channels,
     channel,
-    loading,
+    loading: loadingList || loadingItem,
+    loadingList,
+    loadingItem,
     error,
     fetchChannels,
     fetchChannel,
