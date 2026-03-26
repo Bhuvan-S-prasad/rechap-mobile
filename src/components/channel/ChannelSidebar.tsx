@@ -41,13 +41,19 @@ export const ChannelSidebar = ({
   const videoRooms = rooms.filter((room: any) => room.type === "VIDEO");
 
   const allMembers = Array.isArray(channel.members) ? channel.members : [];
-  const members = allMembers.filter(
-    (member: any) => member.userId !== currentUserId,
-  );
+  
+  const isMe = (member: any) => {
+    return (
+      member.userId === currentUserId ||
+      (member.user && (member.user.userId === currentUserId || member.user.id === currentUserId)) ||
+      (member.profile && (member.profile.userId === currentUserId || member.profile.id === currentUserId)) ||
+      member.profileId === currentUserId
+    );
+  };
 
-  const role =
-    allMembers.find((member: any) => member.userId === currentUserId)?.role ||
-    "GUEST";
+  const members = allMembers.filter((member: any) => !isMe(member));
+
+  const role = allMembers.find(isMe)?.role || "GUEST";
 
   return (
     <View style={styles.container}>

@@ -58,11 +58,12 @@ export const ChannelSidebarHeader = ({
       <Modal
         transparent
         visible={open}
-        animationType="fade"
+        animationType="slide"
         onRequestClose={closeMenu}
       >
         <Pressable style={styles.overlay} onPress={closeMenu}>
-          <View style={styles.menu}>
+          <Pressable style={styles.bottomSheet}>
+            <View style={styles.dragIndicator} />
             {isAdmin && (
               <MenuItem
                 label="Channel Settings"
@@ -125,7 +126,7 @@ export const ChannelSidebarHeader = ({
                 }}
               />
             )}
-          </View>
+          </Pressable>
         </Pressable>
       </Modal>
     </>
@@ -197,20 +198,29 @@ const styles = StyleSheet.create({
   },
   overlay: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "rgba(0,0,0,0.7)",
+    justifyContent: "flex-end",
+    backgroundColor: "rgba(0,0,0,0.5)",
   },
-  menu: {
+  bottomSheet: {
     backgroundColor: "#18191c",
-    paddingVertical: 8,
-    borderRadius: 8,
-    width: "80%",
+    paddingTop: 12,
+    paddingBottom: 40,
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    width: "100%",
     shadowColor: "#000",
-    shadowOffset: { width: 0, height: 4 },
+    shadowOffset: { width: 0, height: -4 },
     shadowOpacity: 0.3,
     shadowRadius: 8,
     elevation: 10,
+  },
+  dragIndicator: {
+    width: 40,
+    height: 4,
+    backgroundColor: "#4b5563",
+    borderRadius: 2,
+    alignSelf: "center",
+    marginBottom: 16,
   },
   menuItem: {
     flexDirection: "row",
